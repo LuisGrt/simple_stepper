@@ -12,7 +12,19 @@ class SimpleStepper extends StatefulWidget {
   final int initialStep;
   final bool scrollable;
   final bool unfocusOnScroll;
+
+  /// Defines if it can scroll to the next step.
+  ///
+  /// This is ignored if [scrollable] is `true`.
+  ///
+  ///  Defaults to `true`.
   final bool canProceed;
+
+  /// Defines if it can scroll to the previous step.
+  ///
+  /// This is ignored if [scrollable] is `true`.
+  ///
+  /// Defaults to `true`.
   final bool canGoBack;
   final FutureOr<bool> Function()? onPrev;
   final FutureOr<bool> Function()? onNext;
@@ -118,11 +130,11 @@ class SimpleStepperState extends State<SimpleStepper> {
   }
 
   Future<void> prev() async {
-    setState(() => _isScrolling = true);
-
-    if (_currentStep == 0.0) {
+    if (isFirstStep) {
       widget.onCancel();
     } else {
+      setState(() => _isScrolling = true);
+
       if (widget.onPrev != null) {
         final result = await widget.onPrev!();
 
@@ -211,13 +223,17 @@ class SimpleStepperState extends State<SimpleStepper> {
                   children: [
                     SimpleStepperButton(
                       widget.displayLeftButton
-                          ? isFirstStep || !widget.displayPrevArrow
+                          ? isFirstStep
                               ? widget.onCancelWidget
-                              : Icon(
-                                  Platform.isIOS
-                                      ? CupertinoIcons.back
-                                      : Icons.arrow_back,
-                                )
+                              : canGoBack
+                                  ? widget.displayPrevArrow
+                                      ? Icon(
+                                          Platform.isIOS
+                                              ? CupertinoIcons.back
+                                              : Icons.arrow_back,
+                                        )
+                                      : null
+                                  : null
                           : null,
                       opacity: _isBusy ? 0.0 : 1.0,
                       onPressed: !_isScrolling && !_isBusy ? prev : null,
@@ -228,17 +244,21 @@ class SimpleStepperState extends State<SimpleStepper> {
                     ),
                     SimpleStepperButton(
                       widget.displayRightButton
-                          ? isLastStep || !widget.displayNextArrow
-                              ? widget.onDoneWidget
-                              : Icon(
-                                  Platform.isIOS
-                                      ? CupertinoIcons.forward
-                                      : Icons.arrow_forward,
-                                )
+                          ? canProceed
+                              ? isLastStep
+                                  ? widget.onDoneWidget
+                                  : widget.displayNextArrow
+                                      ? Icon(
+                                          Platform.isIOS
+                                              ? CupertinoIcons.forward
+                                              : Icons.arrow_forward,
+                                        )
+                                      : null
+                              : null
                           : null,
                       opacity: !_isBusy ? 1.0 : 0.0,
                       onPressed: !_isScrolling && !_isBusy
-                          ? isLastStep || !widget.displayNextArrow
+                          ? isLastStep
                               ? onDone
                               : next
                           : null,
