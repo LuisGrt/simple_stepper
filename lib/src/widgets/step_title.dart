@@ -59,10 +59,20 @@ class StepTitle extends StatelessWidget {
   /// Defaults to `null`, which uses the default text alignment behavior.
   final TextAlign? subtitleAlign;
 
+  /// The font weight of the subtitle text.
+  ///
+  /// Defaults to `null`, which uses the default font weight.
+  final FontWeight? subtitleWeight;
+
   /// The font size of the subtitle text.
   ///
   /// Defaults to `15.0`.
   final double subtitleSize;
+
+  /// The height of the subtitle text line.
+  ///
+  /// Defaults to `null`, which uses the default font height.
+  final double? subtitleHeight;
 
   /// The color of the subtitle text.
   ///
@@ -97,6 +107,8 @@ class StepTitle extends StatelessWidget {
     this.titleColor,
     this.subtitle,
     this.subtitleAlign,
+    this.subtitleWeight,
+    this.subtitleHeight,
     this.subtitleSize = 15.0,
     this.subtitleColor = Colors.black54,
     this.logo,
@@ -143,6 +155,8 @@ class StepTitle extends StatelessWidget {
                           subtitle!,
                           style: TextStyle(
                             fontSize: subtitleSize,
+                            fontWeight: subtitleWeight,
+                            height: subtitleHeight,
                             color: subtitleColor,
                           ),
                           textAlign: subtitleAlign,

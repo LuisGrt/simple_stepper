@@ -1,3 +1,7 @@
+# 0.0.2+2
+
+* Adds `subtitleWeight` and `subtitleHeight` parameters to `StepTitle`.
+
 # 0.0.2+1
 
 * Fix bug: Overflowing text on `StepTitle`.
