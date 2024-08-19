@@ -1,4 +1,4 @@
-# 0.0.1+2
+# 0.0.2
 
 * Add more parameters to `StepTitle` for extended customization.
 * Add documentation for `StepTitle`.
