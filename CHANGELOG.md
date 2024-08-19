@@ -1,3 +1,7 @@
+# 0.0.2+1
+
+* Fix bug: Overflowing text on `StepTitle`.
+
 # 0.0.2
 
 * Add more parameters to `StepTitle` for extended customization.

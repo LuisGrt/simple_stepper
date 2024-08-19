@@ -122,30 +122,35 @@ class StepTitle extends StatelessWidget {
                   ),
                   child: logo,
                 ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: titleSize,
-                      fontWeight: titleWeight,
-                      height: titleHeight,
-                      color: titleColor,
-                    ),
-                    textAlign: titleAlign,
-                  ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle!,
-                      style: TextStyle(
-                        fontSize: subtitleSize,
-                        color: subtitleColor,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: titleSize,
+                          fontWeight: titleWeight,
+                          height: titleHeight,
+                          color: titleColor,
+                        ),
+                        textAlign: titleAlign,
                       ),
-                      textAlign: subtitleAlign,
-                    )
-                ],
-              )
+                      if (subtitle != null)
+                        Text(
+                          subtitle!,
+                          style: TextStyle(
+                            fontSize: subtitleSize,
+                            color: subtitleColor,
+                          ),
+                          textAlign: subtitleAlign,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           if (includeDivider)
