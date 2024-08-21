@@ -1,3 +1,7 @@
+# 0.0.2+3
+
+* Expose the `currentStep` variable from the `SimpleStepperState`.
+
 # 0.0.2+2
 
 * Adds `subtitleWeight` and `subtitleHeight` parameters to `StepTitle`.

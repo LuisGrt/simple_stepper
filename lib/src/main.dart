@@ -90,10 +90,15 @@ class SimpleStepperState extends State<SimpleStepper> {
 
   PageController get controller => _pageController;
 
+  /// Current step displayed in screen.
+  int get currentStep => _currentStep.toInt();
+
+  /// Whether the user can proceed to the next step.
   bool get canProceed => _canProceed;
 
   set canProceed(bool value) => setState(() => _canProceed = value);
 
+  /// Whether the user can go back tp the previous step.
   bool get canGoBack => _canGoBack;
 
   set canGoBack(bool value) => setState(() => _canGoBack = value);

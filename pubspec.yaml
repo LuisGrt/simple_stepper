@@ -1,6 +1,6 @@
 name: simple_stepper
 description: "Simple Stepper helps you present steps in your Flutter App for different purposes, from feature presentation or guide the user filling a form in ordered steps."
-version: 0.0.2+2
+version: 0.0.2+3
 repository: https://github.com/LuisGrt/simple_stepper
 homepage: https://pub.dev/packages/simple_stepper
 
