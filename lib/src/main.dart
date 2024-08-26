@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,10 @@ class SimpleStepper extends StatefulWidget {
   final Key? scaffoldKey;
   final List<StepModel> steps;
   final int initialStep;
+
+  /// Defines if the screens are scrollable by the horizontal swipe gesture.
+  ///
+  /// Defaults to `true`.
   final bool scrollable;
   final bool unfocusOnScroll;
 
@@ -32,10 +35,41 @@ class SimpleStepper extends StatefulWidget {
   final VoidCallback onCancel;
   final Widget onDoneWidget;
   final Widget onCancelWidget;
+
+  /// Defines if the left button should be displayed.
+  ///
+  /// If value is `false`, it won't display the `onCancel` button or
+  /// the `prev` arrow button.
+  ///
+  /// Defaults to `true`.
   final bool displayLeftButton;
+
+  /// Defines if the right button should be displayed.
+  ///
+  /// If value is `false`, it won't display the `onDone` button or
+  /// the `next` arrow button.
+  ///
+  /// Defaults to `true`.
   final bool displayRightButton;
+
+  /// Defines if the left button should be displayed.
+  ///
+  /// If value is `false`, it won't display the `next` arrow button.
+  ///
+  /// Defaults to `true`.
   final bool displayNextArrow;
+
+  /// Defines if the left button should be displayed.
+  ///
+  /// If value is `false`, it won't display the `prev` arrow button.
+  ///
+  /// Defaults to `true`.
   final bool displayPrevArrow;
+
+  /// Defines if the dots indicator should be displayed.
+  ///
+  /// Defaults to `true`.
+  final bool displayDotsIndicator;
 
   SimpleStepper({
     this.scaffoldKey,
@@ -53,6 +87,7 @@ class SimpleStepper extends StatefulWidget {
     this.displayRightButton = true,
     this.displayNextArrow = true,
     this.displayPrevArrow = true,
+    this.displayDotsIndicator = true,
     String? onDoneTitle,
     String? onCancelTitle,
     Widget? onDoneWidget,
@@ -85,26 +120,61 @@ class SimpleStepperState extends State<SimpleStepper> {
   late bool _canProceed;
   late bool _canGoBack;
   late double _currentStep;
+  late bool _displayLeftButton;
+  late bool _displayRightButton;
+  late bool _displayNextArrow;
+  late bool _displayPrevArrow;
+  late bool _displayDotsIndicator;
   bool _isBusy = false;
   bool _isScrolling = false;
 
   PageController get controller => _pageController;
 
-  /// Current step displayed in screen.
+  /// Current step displayed on screen.
   int get currentStep => _currentStep.toInt();
+
+  /// Whether the dots indicator is displayed on screen.
+  bool get displayDotsIndicator => _displayDotsIndicator;
+
+  set displayDotsIndicator(bool value) =>
+      setState(() => _displayDotsIndicator = value);
+
+  /// Whether the left button is displayed on screen.
+  bool get displayLeftButton => _displayLeftButton;
+
+  set displayLeftButton(bool value) =>
+      setState(() => _displayLeftButton = value);
+
+  /// Whether the right button is displayed on screen.
+  bool get displayRightButton => _displayRightButton;
+
+  set displayRightButton(bool value) =>
+      setState(() => _displayRightButton = value);
+
+  /// Whether the previous arrow button is displayed on screen.
+  bool get displayPrevArrow => _displayPrevArrow;
+
+  set displayPrevArrow(bool value) => setState(() => _displayPrevArrow = value);
+
+  /// Whether the next arrow button is displayed on screen.
+  bool get displayNextArrow => _displayNextArrow;
+
+  set displayNextArrow(bool value) => setState(() => _displayNextArrow = value);
 
   /// Whether the user can proceed to the next step.
   bool get canProceed => _canProceed;
 
   set canProceed(bool value) => setState(() => _canProceed = value);
 
-  /// Whether the user can go back tp the previous step.
+  /// Whether the user can go back to the previous step.
   bool get canGoBack => _canGoBack;
 
   set canGoBack(bool value) => setState(() => _canGoBack = value);
 
+  /// Whether the user is currently in the last screen.
   bool get isLastStep => _currentStep.round() == (widget.steps.length - 1);
 
+  /// Whether the user is currently in the first screen.
   bool get isFirstStep => _currentStep == 0.0;
 
   @override
@@ -113,6 +183,11 @@ class SimpleStepperState extends State<SimpleStepper> {
 
     _canProceed = widget.canProceed;
     _canGoBack = widget.canGoBack;
+    _displayLeftButton = widget.displayLeftButton;
+    _displayRightButton = widget.displayRightButton;
+    _displayNextArrow = widget.displayNextArrow;
+    _displayPrevArrow = widget.displayPrevArrow;
+    _displayDotsIndicator = widget.displayDotsIndicator;
     _currentStep = widget.initialStep.toDouble();
 
     _pageController = PageController(initialPage: widget.initialStep);
@@ -227,37 +302,32 @@ class SimpleStepperState extends State<SimpleStepper> {
                 child: Row(
                   children: [
                     SimpleStepperButton(
-                      widget.displayLeftButton
+                      _displayLeftButton
                           ? isFirstStep
                               ? widget.onCancelWidget
                               : canGoBack
-                                  ? widget.displayPrevArrow
-                                      ? Icon(
-                                          Platform.isIOS
-                                              ? CupertinoIcons.back
-                                              : Icons.arrow_back,
-                                        )
+                                  ? _displayPrevArrow
+                                      ? const Icon(CupertinoIcons.back)
                                       : null
                                   : null
                           : null,
                       opacity: _isBusy ? 0.0 : 1.0,
                       onPressed: !_isScrolling && !_isBusy ? prev : null,
                     ),
-                    DotsIndicatorWrapper(
-                      count: widget.steps.length,
-                      currentPosition: _currentStep,
-                    ),
+                    if (_displayDotsIndicator)
+                      DotsIndicatorWrapper(
+                        count: widget.steps.length,
+                        currentPosition: _currentStep,
+                      )
+                    else
+                      const Spacer(),
                     SimpleStepperButton(
-                      widget.displayRightButton
+                      _displayRightButton
                           ? canProceed
                               ? isLastStep
                                   ? widget.onDoneWidget
-                                  : widget.displayNextArrow
-                                      ? Icon(
-                                          Platform.isIOS
-                                              ? CupertinoIcons.forward
-                                              : Icons.arrow_forward,
-                                        )
+                                  : _displayNextArrow
+                                      ? const Icon(CupertinoIcons.forward)
                                       : null
                               : null
                           : null,

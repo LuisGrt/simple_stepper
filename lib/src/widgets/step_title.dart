@@ -138,7 +138,7 @@ class StepTitle extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 15.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
                         title,

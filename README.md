@@ -8,7 +8,7 @@ Simple Stepper helps you present steps in your Flutter App for different purpose
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  simple_stepper: "^0.0.2+3"
+  simple_stepper: "^0.0.3"
 ```
 
 ## Issues

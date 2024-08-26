@@ -1,3 +1,15 @@
+# 0.0.3
+
+* Make the following parameters editable from`SimpleStepperState`:
+    * `displayLeftButton`
+    * `displayRightButton`
+    * `displayNextArrow`
+    * `displayPrevArrow`
+* Add new `displayDotsIndicator` parameter.
+* Fix the `StepTitle` text centering.
+* Remove the use of `Platform` for checking the current platform and make `CupertinoIcons` arrows the default for all.
+  This is for better compatibility.
+
 # 0.0.2+3
 
 * Expose the `currentStep` variable from the `SimpleStepperState`.
